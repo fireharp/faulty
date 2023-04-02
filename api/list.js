@@ -1,11 +1,11 @@
-const { errorDescriptions } = require('../errorCodes');
+const { errorDescriptions } = require('./errorCodes');
 
 const generateHTML = (errors) => {
   const items = errors
     .map(
       (error) => `
     <li>
-      <a href="/errors?code=${error.code}">${error.code}</a> - ${error.description}
+      <a href="/errors/${error.code}">${error.code}</a> - ${error.description}
     </li>`
     )
     .join('');
@@ -27,5 +27,6 @@ const generateHTML = (errors) => {
 
 module.exports = (req, res) => {
   res.setHeader('Content-Type', 'text/html');
-  res.status(200).send(generateHTML(errorDescriptions));
+  res.statusCode = 200;
+  res.end(generateHTML(errorDescriptions));
 };

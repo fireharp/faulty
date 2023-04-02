@@ -1,13 +1,38 @@
-const { random4xxError, random5xxError } = require('./errorCodes');
+const { errorDescriptions } = require('./errorCodes');
 
-module.exports = (req, res) => {
-  if (req.url.startsWith('/4')) {
-    const error = random4xxError();
-    res.status(error.code).json({ message: error.description });
-  } else if (req.url.startsWith('/5')) {
-    const error = random5xxError();
-    res.status(error.code).json({ message: error.description });
+const getErrorInfo = (code) => {
+  const error = errorDescriptions.find((err) => err.code === code);
+  return error || { code: 404, description: 'Error not found' };
+};
+
+const generateHTML = (error) => `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error ${error.code}</title>
+</head>
+<body>
+  <h1>Error ${error.code}</h1>
+  <p>${error.description}</p>
+  <a href="/">Back to Error List</a>
+</body>
+</html>
+`;
+
+module.exports = (req, res, code) => {
+  const errorCode = parseInt(code, 10);
+  const error = getErrorInfo(errorCode);
+  res.setHeader('Content-Type', 'text/html');
+  if (errorCode === 408 || errorCode === 504) {
+    const timeout = 30000; // 30 seconds
+    setTimeout(() => {
+      res.statusCode = error.code;
+      res.end(generateHTML(error));
+    }, timeout);
   } else {
-    res.status(404).json({ message: 'Not Found' });
+    res.statusCode = error.code;
+    res.end(generateHTML(error));
   }
 };
