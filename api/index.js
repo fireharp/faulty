@@ -1,7 +1,4 @@
-const randomErrorResponse = () => {
-  const errors = [400, 401, 403, 404, 500];
-  return errors[Math.floor(Math.random() * errors.length)];
-};
+const { random4xxError, random5xxError } = require('./errorCodes');
 
 module.exports = async (req, res) => {
   const shouldTimeout = Math.random() < 0.2;
@@ -12,7 +9,9 @@ module.exports = async (req, res) => {
   }
 
   if (shouldFail) {
-    res.status(randomErrorResponse()).json({ message: 'An error occurred.' });
+    const randomError =
+      Math.random() < 0.5 ? random4xxError() : random5xxError();
+    res.status(randomError.code).json({ message: randomError.description });
   } else {
     res.status(200).json({ message: 'Success!' });
   }
