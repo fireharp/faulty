@@ -23,6 +23,7 @@ WORKDIR /app
 COPY --from=builder /app/node_modules /app/node_modules
 COPY --from=builder /app/package*.json /app/
 COPY --from=builder /app/index.js /app/
+COPY --from=builder /app/api /app/api
 
 # Set the user to node to avoid running the container as root
 USER node
