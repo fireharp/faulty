@@ -24,15 +24,15 @@ Faulty is a simple Node.js project that emulates HTTP 4xx and 5xx errors for tes
 
 To use Faulty, simply send a request to the desired error endpoint:
 
-\```
+```
 https://faulty.vercel.app/errors/<error_code>
-\```
+```
 
 For example, to get a 502 Bad Gateway response:
 
-\```
+```
 https://faulty.vercel.app/errors/502
-\```
+```
 
 ## Deployment
 
