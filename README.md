@@ -36,7 +36,7 @@ https://faulty.vercel.app/errors/502
 
 ## Deployment
 
-You can deploy Faulty to your own Vercel instance, or you can use the public instance at https://faulty.vercel.app/.
+You can deploy Faulty to your own Vercel instance, use the public instance at https://faulty.vercel.app/, or run it using Docker.
 
 ### Vercel
 
@@ -45,9 +45,26 @@ You can deploy Faulty to your own Vercel instance, or you can use the public ins
 3. Connect the project to the cloned repository.
 4. Deploy the project following Vercel's instructions.
 
-### Docker (coming soon)
+### Docker
 
-A Docker image for Faulty will be available soon. Stay tuned for updates.
+Faulty is available as a Docker image on Docker Hub: https://hub.docker.com/repository/docker/fireharp/faulty/general
+
+To run Faulty with Docker, you can use the provided `docker-compose.yml` example:
+
+```yaml
+version: '3'
+
+services:
+  faulty:
+    image: fireharp/faulty:latest
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS http://localhost:3000 || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+```
 
 ## Contributing
 

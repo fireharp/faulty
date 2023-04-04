@@ -2,7 +2,7 @@ version: '3'
 
 services:
   faulty:
-    image: fireharp/faulty:v0.1.1
+    image: fireharp/faulty:latest
     ports:
       - "3000:3000"
     healthcheck:
